@@ -2,7 +2,7 @@ import time
 import openpyxl
 from docxtpl import DocxTemplate
 
-start_time = time.perf_counter ()
+start_time = time.perf_counter()
 
 wb = openpyxl.load_workbook("employee_details.xlsx")
 thisDoc = DocxTemplate("Letter_of_Training.docx")
@@ -27,11 +27,12 @@ for emp in range(2, rows_count + 1):
         data.append(sheet.cell(emp, cols).value)
 
     context = dict(zip(header, map(str, data)))
-    # print(context)
-    # print("====")
 
-    thisDoc.render(context)
-    thisDoc.save(f'{context["employee_name"]}_training_letter.docx')
+    try:
+        thisDoc.render(context)
+        thisDoc.save(f'./letters/{context["employee_name"]}_training_letter.docx')
+    except:
+        print("something went wrong")
 
 end_time = time.perf_counter()
 print(end_time - start_time, "seconds")
