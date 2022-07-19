@@ -1,6 +1,8 @@
 import time
 import openpyxl
+import os.path
 from docxtpl import DocxTemplate
+from docx2pdf import convert
 
 start_time = time.perf_counter()
 
@@ -29,8 +31,20 @@ for emp in range(2, rows_count + 1):
     context = dict(zip(header, map(str, data)))
 
     try:
-        thisDoc.render(context)
-        thisDoc.save(f'./letters/{context["employee_name"]}_training_letter.docx')
+        if os.path.isfile(f'./letters/{context["employee_name"]}_training_letter.docx'):
+            print("File already exists")
+        else:
+            thisDoc.render(context)
+            thisDoc.save(f'./letters/{context["employee_name"]}_training_letter.docx')
+            print(f"new file created for => {context['employee_name']}")
+
+            # convert to pdf
+
+            # input_file = f'./letters/{context["employee_name"]}_training_letter.docx'
+            # output_file = f'./letters/{context["employee_name"]}_training_letter.pdf'
+            # convert(input_file, output_file)
+            convert("./letters")
+
     except:
         print("something went wrong")
 
