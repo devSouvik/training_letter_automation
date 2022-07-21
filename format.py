@@ -1,5 +1,4 @@
 import openpyxl
-from openpyxl import *
 import numpy as np
 
 
